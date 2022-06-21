@@ -13,10 +13,6 @@ function init() {
         .property("value", sample);
     });
 
-    // Use the first sample from the list to build the initial plots
-    var firstSample = sampleNames[0];
-    buildCharts(firstSample);
-    buildMetadata(firstSample);
   });
 }
 
@@ -26,7 +22,6 @@ init();
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   buildMetadata(newSample);
-  buildCharts(newSample);
   buildBarChart(newSample);
   buildGaugeChart(newSample);
   buildBubbleChart(newSample);
@@ -75,8 +70,9 @@ function buildBarChart(sample) {
     var top_ten_otu_ids = result.otu_ids.slice(0,10).map(numbericIds => {
       return "OTU " + numbericIds;
     }).reverse();
-    var top_ten_otu_labels = results.otu_labels.slice(0,10).reverse();
-    var top_ten_sample_values = results.sample_values.slice(0,10).reverse();
+
+    var top_ten_sample_values = result.sample_values.slice(0,10).reverse();
+    var top_ten_otu_labels = result.otu_labels.slice(0,10).reverse();
 
 
     // 7. Create the yticks for the bar chart.
@@ -108,7 +104,7 @@ function buildBarChart(sample) {
 }
 // Bar and Bubble charts
 // Create the buildCharts function.
-function buildBubbleCharts(sample) {
+function buildBubbleChart(sample) {
   // Use d3.json to load and retrieve the samples.json file 
   d3.json("samples.json").then((data) => {
     var resultArray = data
@@ -137,7 +133,7 @@ function buildBubbleCharts(sample) {
           color: otu_ids,
           size: sample_values
         }
-      };
+      }
    
     ];
 
@@ -187,13 +183,13 @@ function buildGaugeChart(sample) {
         mode: "gauge+number",
         gauge: {
           axis: {range:[null,10]},
-          bar: {color: "black"},
+          bar: {color: "white"},
           steps: [
-            {range: [0,2], color: 'rgba(0,0,0,0.5)'},
-            {range: [2,4], color: 'rgba(183,28,28,0.5)'},
-            {range: [4,6], color: 'rgba(249,168,37,0.5)'},
-            {range: [6,8], color: 'rgba(110,154,22,0.5)'},
-            {range: [8,10], color: 'rgba(14,127,0,0.5)'},
+            {range: [0,2], color: 'red'},
+            {range: [2,4], color: 'orange'},
+            {range: [4,6], color: 'yellow'},
+            {range: [6,8], color: 'lime'},
+            {range: [8,10], color: 'green'},
           ]
         }
       }
@@ -203,7 +199,7 @@ function buildGaugeChart(sample) {
     // 5. Create the layout for the gauge chart.
     var gaugeLayout = { 
       width: 600,
-      height: 500,
+      height: 400,
       margin: {t:0, b:0}
      
     };
